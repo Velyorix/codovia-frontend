@@ -1,0 +1,31 @@
+{
+  "name": "techpedia",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Welcome to the frontend repository of **TechPedia**, an interactive, futuristic wiki platform designed with a **glassmorphism** aesthetic. TechPedia centralizes knowledge on web-oriented programming technologies and modules, while providing an adaptable platform that can be configured for other fields.",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc -b && vite build",
+    "preview": "vite preview"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/YuketsuSh/techpedia-frontend.git"
+  },
+  "author": "Yuketsu",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/YuketsuSh/techpedia-frontend/issues"
+  },
+  "homepage": "https://github.com/YuketsuSh/techpedia-frontend#readme",
+  "dependencies": {
+    "vue": "^3.5.12"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.1.4",
+    "typescript": "~5.6.2",
+    "vite": "^5.4.10",
+    "vue-tsc": "^2.1.8"
+  }
+}
