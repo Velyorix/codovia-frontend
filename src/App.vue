@@ -1,9 +1,11 @@
 <template>
-  <div class="flex items-center justify-center min-h-screen bg-midnightBlue">
-    <h1 class="text-4xl font-bold text-neonBlue">Bienvenue sur TechPedia 🚀</h1>
-  </div>
+  <router-view />
 </template>
 
+<script setup>
+// Aucun script spécifique requis ici
+</script>
+
 <style>
-/* Ajout de styles globaux optionnels */
+/* Si tu veux ajouter des styles globaux, c'est possible, mais pour l'instant, rien à modifier ici */
 </style>
