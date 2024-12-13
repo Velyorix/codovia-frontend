@@ -7,14 +7,17 @@
       {{ errorMessage }}
     </div>
     <router-view />
+    <Toast />
   </div>
 </template>
 
 <script lang="ts">
 import { useAuthStore } from "./stores/auth";
 import { computed } from "vue";
+import Toast from "./components/Shared/Toast.vue";
 
 export default {
+  components: {Toast},
   setup() {
     const authStore = useAuthStore();
     const errorMessage = computed(() => authStore.errorMessage);

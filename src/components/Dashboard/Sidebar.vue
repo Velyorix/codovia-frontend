@@ -7,7 +7,7 @@
           :key="link.label"
           :to="link.route"
           class="block px-4 py-2 rounded-lg hover:bg-gray-700 transition"
-          :class="{ 'bg-purple-600 text-white': isActive(link.route) }"
+          :class="{ 'bg-purple-600 text-white': route.path === link.route }"
       >
         {{ link.label }}
       </router-link>

@@ -13,7 +13,7 @@
       <h3 class="text-2xl font-bold text-primary mb-6 text-center">{{ title }}</h3>
 
       <!-- Contenu passé par slot -->
-      <div class="max-h-96 overflow-y-auto p-4 custom-scrollbar">
+      <div class="max-h-96 overflow-y-auto p-4 custom-scrollbar text-background">
         <slot></slot>
       </div>
 

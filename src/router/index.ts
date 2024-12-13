@@ -29,6 +29,24 @@ const routes = [
         component: () => import("../views/AdminDashboard.vue"),
         meta: { requiresAuth: true, requiresRole: "admin" },
     },
+    {
+        path: "/admin/articles",
+        name: "AdminArticles",
+        component: () => import("../views/AdminArticles.vue"),
+        meta: { requiresAuth: true, requiresRole: "admin" },
+    },
+    {
+        path: "/admin/articles/:id/edit",
+        name: "EditArticlePage",
+        component: () => import("../views/EditArticle.vue"),
+        meta: { requiresAuth: true, requiresRole: "admin" },
+    },
+    {
+        path: "/admin/categories",
+        name: "AdminArticleCategory",
+        component: () => import("../views/AdminArticleCategory.vue"),
+        meta: { requiresAuth: true, requiresRole: "admin" },
+    },
 ];
 
 const router = createRouter({
