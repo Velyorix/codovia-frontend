@@ -1,21 +1,15 @@
 <template>
   <div class="flex min-h-screen bg-gradient-to-b from-gray-900 to-black text-gray-200">
-    <!-- Sidebar -->
     <Sidebar />
 
-    <!-- Main Content -->
     <div class="flex-1 flex flex-col">
-      <!-- Header -->
       <DashboardHeader title="Gestion des Catégories" />
 
-      <!-- Main Section -->
       <main class="p-6 space-y-6">
-        <!-- Chargement -->
         <div v-if="loading" class="text-center py-6">
           <p class="text-gray-400">Chargement...</p>
         </div>
 
-        <!-- Liste des catégories -->
         <div v-else>
           <div class="flex justify-between items-center mb-6">
             <h2 class="text-xl font-semibold text-gray-300">Catégories</h2>
@@ -27,7 +21,6 @@
             </button>
           </div>
 
-          <!-- Arbre des catégories -->
           <div class="bg-gray-800 p-4 rounded-lg">
             <ul class="space-y-4">
               <CategoryTree
@@ -41,7 +34,6 @@
           </div>
         </div>
 
-        <!-- Modal pour Ajouter/Modifier -->
         <Modal
             v-if="modalVisible"
             :visible="modalVisible"
@@ -114,20 +106,18 @@ import { getCategories, createCategory, updateCategory, deleteCategory } from ".
 
 const { success, error } = useToast();
 
-const categories = ref([]); // Liste des catégories
-const loading = ref(false); // Indicateur de chargement
+const categories = ref([]);
+const loading = ref(false);
 
-// État de la modal
 const modalVisible = ref(false);
 const modalMode = ref("create");
 const categoryForm = ref({ id: null, name: "", description: "", parent_id: null });
 
-// Charger les catégories
 const fetchCategories = async () => {
   try {
     loading.value = true;
     const response = await getCategories();
-    categories.value = organizeCategories(response.data); // Organiser les catégories
+    categories.value = organizeCategories(response.data);
   } catch (err) {
     error("Erreur lors du chargement des catégories.");
     console.error(err);
@@ -136,24 +126,20 @@ const fetchCategories = async () => {
   }
 };
 
-// Organiser les catégories en arbre
 const organizeCategories = (categories) => {
   const categoryMap = new Map();
 
-  // Créer une map des catégories
   categories.forEach((category) => {
-    category.children = []; // Initialiser les enfants
+    category.children = [];
     categoryMap.set(category.id, category);
   });
 
   const organizedCategories = [];
   categories.forEach((category) => {
     if (category.parent_id) {
-      // Ajouter aux enfants du parent
       const parent = categoryMap.get(category.parent_id);
       if (parent) parent.children.push(category);
     } else {
-      // Ajouter à la racine
       organizedCategories.push(category);
     }
   });
@@ -161,7 +147,6 @@ const organizeCategories = (categories) => {
   return organizedCategories;
 };
 
-// Ajouter une catégorie
 const createCategoryHandler = async () => {
   if (!categoryForm.value.name.trim() || !categoryForm.value.description.trim()) {
     error("Le nom et la description de la catégorie sont requis.");
@@ -175,7 +160,7 @@ const createCategoryHandler = async () => {
       parent_id: categoryForm.value.parent_id || null,
     });
     success("Catégorie ajoutée avec succès !");
-    fetchCategories(); // Recharger les catégories après création
+    fetchCategories();
     closeModal();
   } catch (err) {
     error("Erreur lors de la création de la catégorie.");
@@ -183,7 +168,6 @@ const createCategoryHandler = async () => {
   }
 };
 
-// Modifier une catégorie
 const updateCategoryHandler = async () => {
   if (!categoryForm.value.name.trim() || !categoryForm.value.description.trim()) {
     error("Le nom et la description de la catégorie sont requis.");
@@ -195,10 +179,10 @@ const updateCategoryHandler = async () => {
       id: categoryForm.value.id,
       name: categoryForm.value.name,
       description: categoryForm.value.description,
-      parent_id: categoryForm.value.parent_id || null, // Si aucun parent sélectionné, envoyer null
+      parent_id: categoryForm.value.parent_id || null,
     });
     success("Catégorie mise à jour avec succès !");
-    fetchCategories(); // Recharger les catégories
+    fetchCategories();
     closeModal();
   } catch (err) {
     error("Erreur lors de la mise à jour de la catégorie.");
@@ -206,7 +190,6 @@ const updateCategoryHandler = async () => {
   }
 };
 
-// Supprimer une catégorie
 const deleteCategoryHandler = async (id) => {
   if (confirm("Êtes-vous sûr de vouloir supprimer cette catégorie ?")) {
     try {
@@ -220,7 +203,6 @@ const deleteCategoryHandler = async (id) => {
   }
 };
 
-// Ouvrir la modal
 const openModal = (mode, category = null) => {
   modalMode.value = mode;
   modalVisible.value = true;
@@ -234,12 +216,10 @@ const openModal = (mode, category = null) => {
       : { id: null, name: "", description: "", parent_id: null };
 };
 
-// Fermer la modal
 const closeModal = () => {
   modalVisible.value = false;
   categoryForm.value = { id: null, name: "", description: "", parent_id: null };
 };
 
-// Charger les catégories au montage
 onMounted(() => fetchCategories());
 </script>

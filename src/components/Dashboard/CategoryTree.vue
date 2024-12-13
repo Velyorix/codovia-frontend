@@ -18,7 +18,6 @@
       </div>
     </div>
 
-    <!-- Sous-catégories -->
     <ul v-if="category.children && category.children.length" class="pl-4 border-l border-gray-600 mt-2">
       <CategoryTree
           v-for="subCategory in category.children"
