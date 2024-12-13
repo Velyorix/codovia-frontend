@@ -186,3 +186,49 @@ export const deleteCategory = async (id: number) => {
 
     if (!response.ok) throw new Error("Erreur lors de la suppression de la catégorie.");
 };
+
+export const getTags = async () => {
+    const response = await fetch(`${API_BASE_URL}/tags`, {
+        headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+    });
+    if (!response.ok) throw new Error("Erreur lors de la récupération des tags.");
+    return await response.json();
+};
+
+export const createTag = async ({ name, description }: { name: string; description: string }) => {
+    const response = await fetch(`${API_BASE_URL}/tags`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify({ name, description }),
+    });
+    if (!response.ok) throw new Error("Erreur lors de la création du tag.");
+    return await response.json();
+};
+
+export const updateTag = async ({ id, name, description }: { id: number; name: string; description: string }) => {
+    const response = await fetch(`${API_BASE_URL}/tags/${id}`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify({ name, description }),
+    });
+    if (!response.ok) throw new Error("Erreur lors de la mise à jour du tag.");
+    return await response.json();
+};
+
+export const deleteTag = async (id: number) => {
+    const response = await fetch(`${API_BASE_URL}/tags/${id}`, {
+        method: "DELETE",
+        headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+    });
+    if (!response.ok) throw new Error("Erreur lors de la suppression du tag.");
+};

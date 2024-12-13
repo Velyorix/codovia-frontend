@@ -47,6 +47,12 @@ const routes = [
         component: () => import("../views/AdminArticleCategory.vue"),
         meta: { requiresAuth: true, requiresRole: "admin" },
     },
+    {
+        path: "/admin/tags",
+        name: "AdminArticleTags",
+        component: () => import("../views/AdminArticleTags.vue"),
+        meta: { requiresAuth: true, requiresRole: "admin" },
+    },
 ];
 
 const router = createRouter({
