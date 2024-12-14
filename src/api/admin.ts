@@ -8,7 +8,12 @@ export const getArticleById = async (id: number) => {
         },
     });
 
-    if (!response.ok) throw new Error("Erreur lors de la récupération de l'article.");
+    if (!response.ok) {
+        const errorMessage = await response.json();
+        console.error("Erreur backend :", errorMessage);
+        throw new Error("Erreur lors de la récupération de l'article.");
+    }
+
     return await response.json();
 };
 
@@ -51,20 +56,35 @@ export const getArticles = async (page = 1) => {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
     });
+
     if (!response.ok) throw new Error("Erreur lors de la récupération des articles.");
+
     return await response.json();
 };
 
-export const updateArticleStatus = async (id, status) => {
-    const response = await fetch(`${API_BASE_URL}/articles/${id}`, {
-        method: "PUT",
+export const getAllArticles = async (page = 1) => {
+    const response = await fetch(`${API_BASE_URL}/admin/articles?page=${page}`, {
         headers: {
-            "Content-Type": "application/json",
             Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
-        body: JSON.stringify({ status }),
     });
-    if (!response.ok) throw new Error("Erreur lors de la mise à jour du statut.");
+
+    if (!response.ok) throw new Error("Erreur lors de la récupération des articles.");
+
+    return await response.json();
+};
+
+const updateArticleStatus = async (article) => {
+    try {
+        await updateArticle({
+            id: article.id,
+            status: article.status,
+        });
+        success("Statut mis à jour avec succès !");
+    } catch (err) {
+        error("Erreur lors de la mise à jour du statut.");
+        console.error(err);
+    }
 };
 
 export const deleteArticle = async (id) => {
@@ -101,21 +121,38 @@ export const rejectArticle = async (id: number, reason: string) => {
     return (await response.json()).message;
 };
 
-export const updateArticle = async (article: { id: number; title: string; content: string; status: string }) => {
-    const response = await fetch(`${API_BASE_URL}/articles/${article.id}`, {
+export const updateArticle = async ({
+                                        id,
+                                        title,
+                                        content,
+                                        status,
+                                        category_id,
+                                        tags,
+                                    }: {
+    id: number;
+    title: string;
+    content: string;
+    status: string;
+    category_id: number | null;
+    tags?: number[];
+}) => {
+    console.log("Payload envoyé au backend :", { title, content, status, category_id, tags });
+
+    const response = await fetch(`${API_BASE_URL}/articles/${id}`, {
         method: "PUT",
         headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
-        body: JSON.stringify({
-            title: article.title,
-            content: article.content,
-            status: article.status,
-        }),
+        body: JSON.stringify({ title, content, status, category_id, tags }),
     });
 
-    if (!response.ok) throw new Error("Erreur lors de la mise à jour de l'article.");
+    if (!response.ok) {
+        const errorMessage = await response.text();
+        console.error("Erreur backend :", errorMessage);
+        throw new Error("Erreur lors de la mise à jour de l'article.");
+    }
+
     return await response.json();
 };
 
